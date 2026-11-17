@@ -1,0 +1,35 @@
+# Visual Studio and build output
+.vs/
+**/bin/
+**/obj/
+**/packages/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Third-party binaries are supplied separately (see README.GitHub.txt)
+/lib/*.dll
+*.exe
+*.pdb
+
+# Measurements, generated results, archives, and temporary files
+*.csv
+*.tmp
+*.log
+*.bak
+*.partial
+*.avi
+*.mp4
+*.mov
+*.pdf
+*.xlsx
+*.xls
+*.zip
+*.7z
+.env
+.env.*
+*.pfx
+*.p12
+*.pem
+*.key

@@ -1,0 +1,17 @@
+﻿Visual Studio 2017 統一版
+開くファイル: MatrixBitmapCrop.sln
+環境: Visual Studio 2017 15.9 / .NET デスクトップ開発 / .NET Framework 4.7.2 Developer Pack
+言語: C# 7.3、実行対象: x64
+ソリューション構成: Debug または Release / Any CPU（生成するアプリ・DLLはx64）
+
+ソリューション エクスプローラーで MatrixBitmapCrop.Controls を展開すると、
+MainForm.cs などの処理ソース27ファイルが表示されます。
+MatrixBitmapCrop には起動用の Program.cs があります。
+DLL連携を維持するため、1ソリューション内にEXEとControls DLLの2プロジェクトがあります。
+
+ビルド出力: bin\Debug または bin\Release
+起動: MatrixBitmapCrop.exe
+旧VS2017別名ソリューション・共有projitemsは不要です。
+従来のREADME等にある別名ソリューションや4.8.1の説明より本書を優先してください。
+旧Release後の C:\MyProgram\SRS360\DllCtrl\DataAnalyze への自動コピーは、
+通常ビルド時は実行せず、MSBuild /p:DeployToSrs360=true 指定時のみ有効です。

@@ -1,0 +1,30 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.33919.361
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatrixBitmapCrop", "MatrixBitmapCrop.csproj", "{93D7515E-0C4D-4F66-A067-316E9F50BC97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatrixBitmapCrop.Controls", "MatrixBitmapCrop.Controls.csproj", "{DDE324B6-AE98-4571-8703-BDEB168059E3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{93D7515E-0C4D-4F66-A067-316E9F50BC97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93D7515E-0C4D-4F66-A067-316E9F50BC97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93D7515E-0C4D-4F66-A067-316E9F50BC97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93D7515E-0C4D-4F66-A067-316E9F50BC97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDE324B6-AE98-4571-8703-BDEB168059E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDE324B6-AE98-4571-8703-BDEB168059E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDE324B6-AE98-4571-8703-BDEB168059E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDE324B6-AE98-4571-8703-BDEB168059E3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ECA1BE27-FFAA-4CA7-B419-764EE0C19F8C}
+	EndGlobalSection
+EndGlobal
