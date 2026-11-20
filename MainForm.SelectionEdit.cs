@@ -162,7 +162,7 @@ namespace MatrixBitmapCrop
         private void CropMoveDown(object sender, MouseEventArgs e)
         {
             suppressCropClick = false;
-            if (operationTabs.SelectedIndex != 0 || source == null || e.Button != MouseButtons.Left)
+            if (!CropFrameActive || source == null || e.Button != MouseButtons.Left)
                 return;
             int handle = HitCropHandle(e.Location);
             if (handle >= 0)
@@ -215,7 +215,8 @@ namespace MatrixBitmapCrop
                         // マウスを押した位置と丸印の中心の差を保ち、つかんだ瞬間の跳びを防ぐ。
                         var corner = CropHandleGeometry.Corner(cropDragOriginal, cropHandleIndex);
                         var target = new PointF(corner.X + handlePoint.X - cropDragStart.X, corner.Y + handlePoint.Y - cropDragStart.Y);
-                        selection = CropHandleGeometry.ResizeCorner(cropDragOriginal, cropHandleIndex, target, (int)marginPixels.Value * 2 + 1);
+                        int minimumSize = SmoothingActive ? 1 : (int)marginPixels.Value * 2 + 1;
+                        selection = CropHandleGeometry.ResizeCorner(cropDragOriginal, cropHandleIndex, target, minimumSize);
                         RebaseRotationReference();
                         UpdateCropMarks();
                     }
@@ -251,7 +252,7 @@ namespace MatrixBitmapCrop
 
         private int HitCropHandle(Point location)
         {
-            if (operationTabs.SelectedIndex != 0 || source == null) return -1;
+            if (!CropFrameActive || source == null || (SmoothingActive && selection == null)) return -1;
             double radius = 10.0 * picture.DeviceDpi / 96;
             int nearest = -1;
             double best = radius * radius;
@@ -268,7 +269,7 @@ namespace MatrixBitmapCrop
 
         private void UpdateCropCursor(Point location)
         {
-            if (operationTabs.SelectedIndex != 0 || source == null) { picture.Cursor = Cursors.Default; return; }
+            if (!CropFrameActive || source == null) { picture.Cursor = Cursors.Default; return; }
             if (cropDragging) { picture.Cursor = Cursors.SizeAll; return; }
             int handle = cropHandleIndex >= 0 ? cropHandleIndex : HitCropHandle(location);
             if (handle >= 0)

@@ -48,6 +48,14 @@
     <Compile Include="MatrixScale.cs" />
     <Compile Include="FolderHistory.cs" />
     <Compile Include="MatrixReducer.cs" />
+    <Compile Include="MatrixZeroBaseline.cs" />
+    <Compile Include="MatrixSmoothing.cs" />
+    <Compile Include="MainForm.Smoothing.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.ZeroBaseline.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MainForm.Reduce.cs">
       <SubType>Form</SubType>
     </Compile>

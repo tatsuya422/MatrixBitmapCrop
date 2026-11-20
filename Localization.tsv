@@ -279,3 +279,35 @@ Y方向縮小: 面積加重平均、0も数値として平均、整数丸め。W
 縮小完了	Reduction complete
 
 回転角度（°：▲ 右／▼ 左・0.1°刻み）	Angle (deg; up: right / down: left; step 0.1)
+
+高さ補正	Zero Baseline
+参考画像（BMP）	Reference image (BMP)
+フォルダー内にBMPがありません。	No BMP files in the folder.
+補正後の最小値（μm）	Target minimum (μm)
+各TXTの最小値が指定した高さになるよう、全セルを同じ量だけ補正します。	Shifts every cell by the same amount so each TXT file reaches the selected minimum height.
+全TXTの高さを補正して保存	Adjust and save all TXT files
+入力フォルダー内のZERO_日時に、元と同じファイル名で保存します。	Saves files with their original names in a dated ZERO_ subfolder.
+全TXTの高さ補正	Adjusting the height baseline of all TXT files
+高さ補正が終了しました。\nTXT成功: {0}/{1}\n失敗: {2}\nコピー成功: {3}\nコピー失敗: {4}\n\n{5}\n詳細: {6}	Height baseline adjustment finished.\nTXT saved: {0}/{1}\nFailed: {2}\nCopied: {3}\nCopy failures: {4}\n\n{5}\nDetails: {6}
+高さ補正エラー	Height baseline error
+高さ補正完了	Height baseline adjustment complete
+Matrixのデータ行がありません。	The matrix contains no data rows.
+
+平滑化フィルタ	Smoothing
+メディアンフィルタ	Median filter
+ガウシアン平滑化	Gaussian smoothing
+画像上で始点・幅方向の終点・高さ方向の点を順にクリックします。切り出しと枠を共用します。	Click the start, width endpoint, and a point for the height on the image. The crop tab shares this frame.
+平滑化方式	Smoothing method
+フィルタサイズ（セル）	Filter size (cells)
+赤枠内のセルだけを使って、赤枠内を平滑化します。	Smooths cells inside the red frame using only neighbors inside it.
+全TXTに適用して保存	Apply and save all TXT files
+結果フォルダーに平滑化済みTXTを保存し、付随ファイルもコピーします。	Saves smoothed TXT files and copies accompanying files to the results folder.
+赤枠内が平滑化の対象です。	Smoothing applies inside the red frame.
+入力フォルダーを開き、赤枠を指定してください。	Open the input folder and set the red frame.
+平滑化フィルタを適用中	Applying smoothing filter
+平滑化フィルタの処理が終了しました。\nTXT成功: {0}/{1}\n失敗: {2}\nコピー成功: {3}\nコピー失敗: {4}\n\n{5}\n詳細: {6}	Smoothing finished.\nTXT saved: {0}/{1}\nFailed: {2}\nCopied: {3}\nCopy failures: {4}\n\n{5}\nDetails: {6}
+平滑化フィルタのエラー	Smoothing error
+平滑化完了	Smoothing complete
+平滑化には対象TXTの実寸ヘッダーが必要です。	The target TXT file needs a physical size header for smoothing.
+赤枠内に平滑化できるセルがありません。	There are no cells to smooth inside the red frame.
+赤枠内のMatrixデータが不足しています: 行{0}	Missing matrix data inside the red frame at row {0}.

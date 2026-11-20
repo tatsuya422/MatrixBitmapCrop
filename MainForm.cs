@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -123,6 +125,7 @@ namespace MatrixBitmapCrop
             };
             canvas.Controls.Add(picture);
             Controls.Add(canvas);
+            Controls.Add(zeroPreview);
             Controls.Add(sidebar);
             Controls.Add(status);
             canvas.Resize += (s, e) =>
@@ -157,6 +160,10 @@ namespace MatrixBitmapCrop
             tabs.TabPages.Add(BuildReduceTab());
             tabs.TabPages.Add(BuildCorrectionTab());
             tabs.TabPages.Add(BuildAlignmentTab());
+            zeroBaselineTab = BuildZeroBaselineTab();
+            tabs.TabPages.Add(zeroBaselineTab);
+            smoothingTab = BuildSmoothingTab();
+            tabs.TabPages.Add(smoothingTab);
             operationTabs = tabs;
             tabs.SelectedIndexChanged += (s, e) =>
             {
@@ -164,6 +171,7 @@ namespace MatrixBitmapCrop
                 maskDragging = false;
                 picture.Capture = false;
                 picture.Invalidate();
+                UpdateZeroPreviewVisibility();
                 UpdateStatus();
             };
             sidebar.Controls.Add(tabs);
@@ -412,10 +420,13 @@ namespace MatrixBitmapCrop
         // 画像を複製して読み込み、元ファイルをロックし続けないようにする。
         private void LoadImage(string path)
         {
-            Bitmap replacement;
+            SetReferenceImage(ReadBitmap(path));
+        }
+
+        private static Bitmap ReadBitmap(string path)
+        {
             using (var loaded = new Bitmap(path))
-                replacement = new Bitmap(loaded);
-            SetReferenceImage(replacement);
+                return new Bitmap(loaded);
         }
 
         // 実画像とMatrixからの生成画像を、同じ座標指定・マスク処理に使用する。
@@ -549,9 +560,19 @@ namespace MatrixBitmapCrop
 
         private void UpdateStatus()
         {
+            if (ZeroBaselineActive)
+            {
+                status.Text = zeroPreviewStatus;
+                return;
+            }
             if (MaskModeActive && source != null)
             {
                 status.Text = string.Format(T("マスク {0}箇所 ／ {1}"), maskShapes.Count, MaskInstruction());
+                return;
+            }
+            if (SmoothingActive && selection != null)
+            {
+                status.Text = T("赤枠内が平滑化の対象です。");
                 return;
             }
             status.Text = source == null ? T("入力フォルダーを指定してください。") :
@@ -641,7 +662,7 @@ namespace MatrixBitmapCrop
                     });
                 }
             }
-            if (selection != null && selection.Width > marginPixels.Value * 2 && selection.Height > marginPixels.Value * 2)
+            if (!SmoothingActive && selection != null && selection.Width > marginPixels.Value * 2 && selection.Height > marginPixels.Value * 2)
             {
                 var inner = selection.Inset((int)marginPixels.Value);
                 using (var pen = new Pen(Color.Lime, 2))
@@ -757,6 +778,61 @@ namespace MatrixBitmapCrop
             return Directory.GetFiles(directory, "*", SearchOption.TopDirectoryOnly)
                 .Where(p => string.Equals(Path.GetExtension(p), extension, StringComparison.OrdinalIgnoreCase))
                 .OrderBy(p => p, StringComparer.OrdinalIgnoreCase).ToArray();
+        }
+
+        internal static string[] FindNonMatrixFiles(string directory)
+        {
+            return Directory.GetFiles(directory, "*", SearchOption.TopDirectoryOnly)
+                .Where(path => !string.Equals(Path.GetExtension(path), ".txt", StringComparison.OrdinalIgnoreCase))
+                .ToArray();
+        }
+
+        internal static string GetAvailableLogName(string[] attachments, string stem)
+        {
+            var names = new HashSet<string>(attachments.Select(Path.GetFileName), StringComparer.OrdinalIgnoreCase);
+            string name = stem + ".log";
+            for (int i = 1; names.Contains(name); i++)
+                name = stem + "_" + i.ToString("D3", CultureInfo.InvariantCulture) + ".log";
+            return name;
+        }
+
+        internal static void CopyAttachments(string[] attachments, string destination, BatchResult result,
+            int completed, Action<int, int, string> report)
+        {
+            for (int i = 0; i < attachments.Length; i++)
+            {
+                string name = Path.GetFileName(attachments[i]);
+                report?.Invoke(completed + i, completed + attachments.Length, name);
+                try
+                {
+                    CopyAttachment(attachments[i], Path.Combine(destination, name));
+                    result.CopyCount++;
+                }
+                catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
+                {
+                    result.CopyErrors.Add(name + ": " + ex.Message);
+                }
+            }
+        }
+
+        private static void CopyAttachment(string input, string output)
+        {
+            string temporary = Path.Combine(Path.GetDirectoryName(output), Path.GetRandomFileName() + ".partial");
+            using (var source = File.OpenRead(input))
+            {
+                var target = new FileStream(temporary, FileMode.CreateNew, FileAccess.Write);
+                try
+                {
+                    using (target)
+                        source.CopyTo(target);
+                    File.Move(temporary, output);
+                }
+                finally
+                {
+                    if (File.Exists(temporary))
+                        File.Delete(temporary);
+                }
+            }
         }
 
         // 画像名に対応するTXT、次にMeasureを含むTXTを優先して選択する。
